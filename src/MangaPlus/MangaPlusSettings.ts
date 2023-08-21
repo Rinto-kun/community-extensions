@@ -20,6 +20,7 @@ export const getResolution = async (stateManager: SourceStateManager): Promise<s
     )
 }
 
+// TODO: The languages and quality switch can potentially cause a crash (JS managed value was released) when the user navigates to the settings screen, goes back, looks at a chapter and then returns to the settings screen. Hopefully this gets fixed in 0.9
 export const contentSettings = (stateManager: SourceStateManager): DUINavigationButton => {
     return App.createDUINavigationButton({
         id: 'content_settings',

@@ -147,7 +147,7 @@ export class MangaPlus implements SearchResultsProviding, MangaProviding, Chapte
 
         const pages = result.success.mangaViewer?.pages
             .map(page => page.mangaPage)
-            .filter(page => page !== null)
+            .filter(page => page)
             .map((page) => page?.encryptionKey ? `${page?.imageUrl}#${page?.encryptionKey}` : '')
 
         return App.createChapterDetails({
@@ -393,6 +393,9 @@ export class MangaPlus implements SearchResultsProviding, MangaProviding, Chapte
     private decodeXoRCipher(buffer: Uint8Array, encryptionKey: string) {
         const key = encryptionKey.match(/../g)?.map((byte) => parseInt(byte, 16)) ?? []
 
-        return buffer.map((byte, index) => byte ^ (key[index % key.length] ?? 0))
+        for (let i = 0; i < buffer.length; i ++) {
+            buffer[i] ^= (key[i % key.length] ?? 0)
+        }
+        return buffer
     }
 }
